@@ -249,6 +249,7 @@ export default function TransJoyActivity() {
   const goNext = useCallback(() => {
     if (isLast) {
       bigConfetti();
+      setFinished(true);
       return;
     }
     setDirection("left");
