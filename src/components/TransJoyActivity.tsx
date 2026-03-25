@@ -241,6 +241,7 @@ function RevealBubbles({ bubbles }: { bubbles: RevealBubble[] }) {
 
 export default function TransJoyActivity() {
   const [current, setCurrent] = useState(0);
+  const [finished, setFinished] = useState(false);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
   const touchStart = useRef<number | null>(null);
   const isLast = current === cards.length - 1;
@@ -248,6 +249,7 @@ export default function TransJoyActivity() {
   const goNext = useCallback(() => {
     if (isLast) {
       bigConfetti();
+      setFinished(true);
       return;
     }
     setDirection("left");
@@ -281,6 +283,57 @@ export default function TransJoyActivity() {
 
   const card = cards[current];
   const progress = ((current + 1) / cards.length) * 100;
+
+  if (finished) {
+    return (
+      <div
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-6 relative overflow-hidden"
+        style={{ backgroundColor: "#f8fff8" }}
+      >
+        {/* Floating orbs */}
+        <div
+          className="absolute rounded-full blur-3xl opacity-30"
+          style={{ width: 260, height: 260, background: "#55cdfc", top: "10%", left: "-8%", animation: "float-orb 18s ease-in-out infinite" }}
+        />
+        <div
+          className="absolute rounded-full blur-3xl opacity-25"
+          style={{ width: 220, height: 220, background: "#f7a8b8", top: "50%", right: "-10%", animation: "float-orb 22s ease-in-out infinite 4s" }}
+        />
+
+        <div className="relative z-10 text-center space-y-6 max-w-[440px] animate-fade-in">
+          <div className="text-6xl mb-2">🎉</div>
+          <h1 className="font-display text-4xl leading-tight text-foreground">
+            You Did It!
+          </h1>
+          <p className="text-lg text-foreground/70 leading-relaxed">
+            You showed up for yourself today. That matters.<br />
+            Your joy is real, valid, and yours to keep.
+          </p>
+          <div className="space-y-3 pt-2">
+            <p
+              className="font-display italic text-xl leading-snug"
+              style={{ color: "#f7a8b8" }}
+            >
+              "I am trans and I am joyful."
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              setFinished(false);
+              setCurrent(0);
+            }}
+            className="mt-6 py-3 px-8 rounded-full text-sm font-semibold transition-opacity duration-200 hover:opacity-80"
+            style={{
+              background: "linear-gradient(135deg, #55cdfc, #f7a8b8)",
+              color: "white",
+            }}
+          >
+            Start Again 💜
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
