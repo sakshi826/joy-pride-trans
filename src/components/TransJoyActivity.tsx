@@ -241,6 +241,7 @@ function RevealBubbles({ bubbles }: { bubbles: RevealBubble[] }) {
 
 export default function TransJoyActivity() {
   const [current, setCurrent] = useState(0);
+  const [finished, setFinished] = useState(false);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
   const touchStart = useRef<number | null>(null);
   const isLast = current === cards.length - 1;
